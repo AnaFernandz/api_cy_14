@@ -61,52 +61,38 @@ describe('Testes da Funcionalidade Usuários', () => {
 
     });
 
+  
     it('Deve editar um usuário previamente cadastrado', () => {
-         //TODO: 
-         cy.request('usuarios').then(response => {
-          let id = response.body.usuarios[0]._id
-
-        cy.request({
-          method: 'PUT',
-          url: `usuarios/${id}`,
-          body: {
+        cy.addUsuario('Ana Fernandez', 'fernandez@qa.com.br', 'teste').then(id => {
+            cy.request({
+                method: 'PUT',
+                url: `usuarios/${id}`,
+                body: {
                     "nome": 'Ana Fernandez novo',
                     "email": "fernandez_novo@qa.com.br",
-                    "password": "teste",   
-                     "administrador": "true" 
-          }
-         }).then((response) => {
-          expect(response.status).to.equal(200)
-          expect(response.body.message).contain('Registro alterado com sucesso')
-
-     }) 
-})
-
+                    "password": "teste",
+                    "administrador": "true"
+                }
+            }).then((response) => {
+                expect(response.status).to.equal(200)
+                expect(response.body.message).contain('Registro alterado com sucesso')
+            })
+        })
     });
+
+
 
     it('Deve deletar um usuário previamente cadastrado', () => {
-        //TODO: 
-        cy.request('usuarios').then(response => {
-          let id = response.body.usuarios[0]._id
-          
-        cy.request({
-          method: 'DELETE',
-          url: `usuarios/${id}`,
-          body: {
-                    "nome": 'Ana Fernandez novo',
-                    "email": "fernandez_novo@qa.com.br",
-                    "password": "teste",   
-                     "administrador": "true" 
-          }
-         }).then((response) => {
-          expect(response.status).to.equal(200)
-          expect(response.body.message).contain('Registro excluído com sucesso')
-
-     }) 
-})
-
+        cy.addUsuario('Ana Fernandez', 'fernandez@qa.com.br', 'teste').then(id => {
+            cy.request({
+                method: 'DELETE',
+                url: `usuarios/${id}`
+            }).then((response) => {
+                expect(response.status).to.equal(200)
+                expect(response.body.message).contain('Registro excluído com sucesso')
+            })
+        })
     });
 
-    });
-
+});
 
