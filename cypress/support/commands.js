@@ -51,3 +51,19 @@ Cypress.Commands.add('token', (email, senha) => {
           failOnStatusCode: false
     })
  })
+
+Cypress.Commands.add('addUsuario', (nome, email, password, administrador = 'true') => {
+    cy.request({
+        method: 'POST',
+        url: 'Usuarios',
+        body: {
+            "nome": nome,
+            "email": email,
+            "password": password,
+            "administrador": administrador
+        }
+    }).then((response) => {
+        expect(response.status).to.equal(201)
+        return response.body._id; // retorna o id do usuário criado
+    })
+});
